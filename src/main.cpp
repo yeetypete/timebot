@@ -1,7 +1,13 @@
 #include <Arduino.h>
 #include <AccelStepper.h>
+#include <Servo.h>
 #include <math.h>
 #include "plotter.h"
+#include "alphanumeric.h"
+
+#define EFFECTOR_PIN 10
+#define EFFECTOR_TRAVEL_DEGREES 20
+#define EFFECTOR_OFFSET_DEGREES 0
 
 #define STEPPER_1_PIN_1 2
 #define STEPPER_1_PIN_2 5
@@ -36,8 +42,26 @@ void Axis::moveToMillimeters(float millimeters)
   moveTo(steps);
 };
 
+Effector::Effector(int pin)
+{
+  attach(pin);
+};
+
+void Effector::select(int8_t position) {
+  if (position == 0) {
+    write(90 - EFFECTOR_OFFSET_DEGREES); // center is 90 deg
+  }
+  if (position == 1) {
+    write(90 - EFFECTOR_OFFSET_DEGREES + EFFECTOR_TRAVEL_DEGREES);
+  }
+  if (position == 2) {
+    write(90 - EFFECTOR_OFFSET_DEGREES - EFFECTOR_TRAVEL_DEGREES);
+  }
+}
+
 Plotter::Plotter() : axisLeft(new Axis(AccelStepper::FULL2WIRE, STEPPER_1_PIN_1, STEPPER_1_PIN_2)),
-                     axisRight(new Axis(AccelStepper::FULL2WIRE, STEPPER_2_PIN_1, STEPPER_2_PIN_2)){
+                     axisRight(new Axis(AccelStepper::FULL2WIRE, STEPPER_2_PIN_1, STEPPER_2_PIN_2)),
+                     effector(new Effector(EFFECTOR_PIN)){
 
                      };
 
@@ -46,7 +70,7 @@ void Plotter::home(float travel_mm)
   axisLeft->moveMillimeters(travel_mm);
   axisRight->moveMillimeters(-travel_mm);
 
-  while (axisLeft->run() && axisRight->run())
+  while (run())
     ;
 
   axisLeft->setCurrentPosition(0);
@@ -55,13 +79,15 @@ void Plotter::home(float travel_mm)
 
 void Plotter::move(float x_mm, float y_mm)
 {
-  if (y_mm > PLOTTER_LINK_LENGTH) {
+  if (y_mm > PLOTTER_LINK_LENGTH)
+  {
     // axisLeft->stop();
     // axisRight->stop();
     return;
   }
 
-  if (x_mm > PLOTTER_LINK_LENGTH || x_mm < - PLOTTER_LINK_LENGTH) {
+  if (x_mm > PLOTTER_LINK_LENGTH || x_mm < -PLOTTER_LINK_LENGTH)
+  {
     // axisLeft->stop();
     // axisRight->stop();
     return;
@@ -85,7 +111,8 @@ void Plotter::moveTo(float x_mm, float y_mm)
   axisRight->moveToMillimeters(axisRightPos);
 }
 
-bool Plotter::run() {
+bool Plotter::run()
+{
   bool axisLeftStatus = axisLeft->run();
   bool axisRightStatus = axisRight->run();
   return axisLeftStatus && axisRightStatus;
@@ -103,5 +130,13 @@ void setup()
 void loop()
 {
   plotter.moveTo(10, 20);
-  plotter.run();
+  while (plotter.run())
+    ;
+  plotter.moveTo(40, 20);
+  while (plotter.run())
+    ;
+  while (true)
+    ;
+  plotter.effector->select(1);
+  delay(100);
 }
