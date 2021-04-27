@@ -16,10 +16,10 @@ class Plotter
 {
 public:
     Plotter();
-    void calibrate(float);
-    void moveTo(float, float);
+    void home(float);
     void move(float, float);
-
+    void moveTo(float, float);
+    bool run();
 public:
     Axis *axisLeft;
     Axis *axisRight;
