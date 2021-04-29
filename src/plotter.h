@@ -19,7 +19,7 @@ public:
 class Effector : public Servo
 {
 public:
-    Effector(int);
+    Effector();
     void position(int8_t);
 };
 
@@ -35,14 +35,15 @@ public:
     bool run();
     bool runSpeedToPosition();
     void drawDigit(Digit, float, float);
+    void eraseDigit(Digit, float, float);
     void drawClock(Clock, float, float);
+    void eraseClock(Clock, float, float);
     void drawDelimiter(Delimiter, float, float);
 
 public:
     Axis *axisLeft;
     Axis *axisRight;
     Effector *effector;
-    Clock *clock;
 };
 
 #endif /* PLOTTER_H */

@@ -11,50 +11,18 @@ Clock clock;
 
 void setup()
 {
-  plotter.home(PLOTTER_LINK_LENGTH);
-  for (int i = 0; i < CLOCK_NUM_DIGITS; i++) {
+  for (int i = 0; i < CLOCK_NUM_DIGITS; i++)
+  {
     clock.digits[i].setDigit(i + 1);
   }
-  delay(1000);
+  plotter.effector->attach(EFFECTOR_PIN);
+  plotter.home(PLOTTER_LINK_LENGTH);
 }
 
 void loop()
 {
-  //plotter.drawDigit(clock.digits[0], 0, 75);
-  plotter.drawClock(clock, -75, 50);
+  plotter.drawClock(clock, -40, 70);
+  plotter.eraseClock(clock, -40, 70);
+  while (true)
+    ;
 }
-
-  // plotter.moveTo(0, 80);
-  // plotter.setSpeed(STEPPER_MAX_SPEED);
-  // while(!plotter.moveDone()) {
-  //   plotter.runSpeedToPosition();
-  // }
-  // plotter.moveTo(20, 80);
-  // plotter.setSpeed(STEPPER_MAX_SPEED);
-  // while(!plotter.moveDone()) {
-  //   plotter.runSpeedToPosition();
-  // }
-  //   plotter.moveTo(20, 100);
-  // plotter.setSpeed(STEPPER_MAX_SPEED);
-  // while(!plotter.moveDone()) {
-  //   plotter.runSpeedToPosition();
-  // }
-  //   plotter.moveTo(0, 100);
-  // plotter.setSpeed(STEPPER_MAX_SPEED);
-  // while(!plotter.moveDone()) {
-  //   plotter.runSpeedToPosition();
-  // }
-  
-
-/*
-  plotter.axisLeft->moveToMillimeters(10);
-  plotter.axisLeft->setSpeedMillimeters(STEPPER_MAX_SPEED);
-  while (plotter.axisLeft->distanceToGo() != 0)
-    plotter.axisLeft->runSpeedToPosition();
-  delay(500);
-  plotter.axisLeft->moveToMillimeters(-10);
-  plotter.axisLeft->setSpeedMillimeters(STEPPER_MAX_SPEED);
-  while (plotter.axisLeft->distanceToGo() != 0)
-    plotter.axisLeft->runSpeedToPosition();
-  delay(500);
-*/
