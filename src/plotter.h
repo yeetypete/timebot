@@ -36,6 +36,7 @@ public:
     bool runSpeedToPosition();
     void drawDigit(Digit, float, float);
     void drawClock(Clock, float, float);
+    void drawDelimiter(Delimiter, float, float);
 
 public:
     Axis *axisLeft;

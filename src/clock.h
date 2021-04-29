@@ -27,6 +27,10 @@ class Digit {
 class Delimiter {
     public:
     Delimiter();
+
+    public:
+    Point bottom;
+    Point top;
 };
 
 class Clock {

@@ -183,6 +183,32 @@ void Plotter::drawClock(Clock clock, float clock_loc_x_mm, float clock_loc_y_mm)
 
     if (i == 1) {
       // draw delimiter
+      float delim_offset_x_mm = DIGIT_SPACING / 2;
+      drawDelimiter(clock.delimiter, x_mm + delim_offset_x_mm, y_mm);
     };
   }
+}
+
+void Plotter::drawDelimiter(Delimiter delim, float delim_loc_x_mm, float delim_loc_y_mm) {
+  float x_mm = delim.bottom.x_mm + delim_loc_x_mm;
+  float y_mm = delim.bottom.y_mm + delim_loc_y_mm;
+
+    moveTo(x_mm, y_mm);
+    setSpeed(STEPPER_MAX_SPEED);
+    while (!moveDone())
+      runSpeedToPosition();
+    
+    // TOUCH PEN DOWN HERE
+    // LIFT PEN UP
+
+    x_mm += delim.top.x_mm;
+    y_mm += delim.top.y_mm;
+
+    moveTo(x_mm, y_mm);
+    setSpeed(STEPPER_MAX_SPEED);
+    while (!moveDone())
+      runSpeedToPosition();
+    
+    // TOUCH PEN DOWN HERE
+    // LIFT PEN UP
 }

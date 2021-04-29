@@ -25,6 +25,7 @@
 #define DIGIT_WIDTH 15.0 // mm
 #define DIGIT_HEIGHT 30.0 // mm
 #define DIGIT_SPACING 1.25 * DIGIT_WIDTH
+#define DELIMITER_HEIGHT 20.0 // mm
 #define NUM_SEGMENTS 7
 
 #endif /* CONFIG_H */

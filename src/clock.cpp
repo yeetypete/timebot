@@ -136,7 +136,10 @@ void Digit::reset()
 }
 
 Delimiter::Delimiter() {
-
+    bottom.x_mm = 0;
+    bottom.y_mm = (DIGIT_HEIGHT - DELIMITER_HEIGHT)/2;
+    top.x_mm = 0;
+    top.y_mm = DELIMITER_HEIGHT + bottom.y_mm;
 }
 
 Clock::Clock() {
