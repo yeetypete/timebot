@@ -2,6 +2,7 @@
 #include <AccelStepper.h>
 #include <Servo.h>
 #include <math.h>
+
 #include "plotter.h"
 #include "clock.h"
 #include "config.h"
@@ -21,8 +22,8 @@ void setup()
 
 void loop()
 {
-  plotter.drawClock(clock, -40, 70);
-  plotter.eraseClock(clock, -40, 70);
+  plotter.drawClock(&clock, -40, 70);
+  plotter.eraseClock(&clock, -40, 70);
   while (true)
     ;
 }

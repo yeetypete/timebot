@@ -78,6 +78,7 @@ void Plotter::setSpeed(float millimeters)
 
 void Plotter::home(float travel_mm)
 {
+  effector->position(0);
   axisLeft->moveMillimeters(travel_mm);
   axisRight->moveMillimeters(-travel_mm);
 
@@ -193,7 +194,7 @@ void Plotter::eraseDigit(Digit digit, float digit_loc_x_mm, float digit_loc_y_mm
   {
     if (digit.segments[i].isActive)
     {
-      float x_mm = digit.segments[i].start.x_mm + digit_loc_x_mm - ERASER_OFFSET;
+      float x_mm = digit.segments[i].start.x_mm + digit_loc_x_mm + ERASER_OFFSET;
       float y_mm = digit.segments[i].start.y_mm + digit_loc_y_mm;
       moveTo(x_mm, y_mm);
       setSpeed(STEPPER_MAX_SPEED);
@@ -202,7 +203,7 @@ void Plotter::eraseDigit(Digit digit, float digit_loc_x_mm, float digit_loc_y_mm
 
       effector->position(2); // put pen down
 
-      x_mm = digit.segments[i].end.x_mm + digit_loc_x_mm - ERASER_OFFSET;
+      x_mm = digit.segments[i].end.x_mm + digit_loc_x_mm + ERASER_OFFSET;
       y_mm = digit.segments[i].end.y_mm + digit_loc_y_mm;
       moveTo(x_mm, y_mm);
       setSpeed(STEPPER_MAX_SPEED);
@@ -215,40 +216,40 @@ void Plotter::eraseDigit(Digit digit, float digit_loc_x_mm, float digit_loc_y_mm
 }
 
 
-void Plotter::drawClock(Clock clock, float clock_loc_x_mm, float clock_loc_y_mm)
+void Plotter::drawClock(Clock *clock, float clock_loc_x_mm, float clock_loc_y_mm)
 {
   float x_mm = clock_loc_x_mm;
   float y_mm = clock_loc_y_mm;
   for (int i = 0; i < CLOCK_NUM_DIGITS; i++)
   {
     x_mm += i * DIGIT_SPACING;
-    drawDigit(clock.digits[i], x_mm, y_mm);
+    drawDigit(clock->digits[i], x_mm, y_mm);
 
     if (i == 1)
     {
       // draw delimiter
       float delim_offset_x_mm = DIGIT_SPACING / 2;
-      drawDelimiter(clock.delimiter, x_mm + delim_offset_x_mm, y_mm);
+      drawDelimiter(&clock->delimiter, x_mm + delim_offset_x_mm, y_mm);
     };
   }
 }
 
-void Plotter::eraseClock(Clock clock, float clock_loc_x_mm, float clock_loc_y_mm)
+void Plotter::eraseClock(Clock *clock, float clock_loc_x_mm, float clock_loc_y_mm)
 {
   float x_mm = clock_loc_x_mm;
   float y_mm = clock_loc_y_mm;
   for (int i = 0; i < CLOCK_NUM_DIGITS; i++)
   {
     x_mm += i * DIGIT_SPACING;
-    eraseDigit(clock.digits[i], x_mm, y_mm);
+    eraseDigit(clock->digits[i], x_mm, y_mm);
   }
 }
 
 
-void Plotter::drawDelimiter(Delimiter delim, float delim_loc_x_mm, float delim_loc_y_mm)
+void Plotter::drawDelimiter(Delimiter *delim, float delim_loc_x_mm, float delim_loc_y_mm)
 {
-  float x_mm = delim.bottom.x_mm + delim_loc_x_mm;
-  float y_mm = delim.bottom.y_mm + delim_loc_y_mm;
+  float x_mm = delim->bottom.x_mm + delim_loc_x_mm;
+  float y_mm = delim->bottom.y_mm + delim_loc_y_mm;
 
   moveTo(x_mm, y_mm);
   setSpeed(STEPPER_MAX_SPEED);
@@ -258,8 +259,8 @@ void Plotter::drawDelimiter(Delimiter delim, float delim_loc_x_mm, float delim_l
   effector->position(1);
   effector->position(0);
 
-  x_mm += delim.top.x_mm;
-  y_mm += delim.top.y_mm;
+  x_mm += delim->top.x_mm;
+  y_mm += delim->top.y_mm;
 
   moveTo(x_mm, y_mm);
   setSpeed(STEPPER_MAX_SPEED);
