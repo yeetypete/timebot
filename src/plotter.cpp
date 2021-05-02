@@ -239,7 +239,7 @@ void Plotter::drawClock(Clock *clock, float clock_loc_x_mm, float clock_loc_y_mm
 
 void Plotter::eraseClock(Clock *clock, float clock_loc_x_mm, float clock_loc_y_mm)
 {
-  float x_mm = clock_loc_x_mm;
+  float x_mm = clock_loc_x_mm - ERASER_OFFSET;
   float y_mm = clock_loc_y_mm;
   for (int i = 0; i < CLOCK_NUM_DIGITS; i++)
   {

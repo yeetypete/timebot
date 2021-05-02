@@ -11,7 +11,6 @@
 
 Plotter plotter;
 Clock clock;
-Digit digit;
 
 void setup()
 {
@@ -24,17 +23,12 @@ void setup()
 
   plotter.effector->attach(EFFECTOR_PIN);
   plotter.home(PLOTTER_LINK_LENGTH);
-  digit.setDigit(0);
 }
 
 void loop()
 {
   plotter.drawClock(&clock, -40, 70);
-  // plotter.moveTo(-30 - ERASER_OFFSET, 70);
-  //     plotter.setSpeed(STEPPER_MAX_SPEED);
-  //     while (!plotter.moveDone())
-  //       plotter.runSpeedToPosition();  
-  // plotter.eraseClock(&clock, -30 - ERASER_OFFSET, 70);
+  plotter.eraseClock(&clock, -40, 70);
   while (true)
     ;
 }
