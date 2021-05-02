@@ -1,3 +1,5 @@
+// Copyright 2021 Peter Siegel psiegel@bu.edu
+
 #include <Arduino.h>
 #include <AccelStepper.h>
 #include <Servo.h>
@@ -78,7 +80,7 @@ void Plotter::setSpeed(float millimeters)
 
 void Plotter::home(float travel_mm)
 {
-  effector->position(0);
+  effector->position(2);
   axisLeft->moveMillimeters(travel_mm);
   axisRight->moveMillimeters(-travel_mm);
 
@@ -183,7 +185,7 @@ void Plotter::drawDigit(Digit digit, float digit_loc_x_mm, float digit_loc_y_mm)
       while (!moveDone())
         runSpeedToPosition();
 
-      effector->position(0); // lift pen up
+      effector->position(2); // lift pen up
     }
   }
 }
@@ -194,23 +196,23 @@ void Plotter::eraseDigit(Digit digit, float digit_loc_x_mm, float digit_loc_y_mm
   {
     if (digit.segments[i].isActive)
     {
-      float x_mm = digit.segments[i].start.x_mm + digit_loc_x_mm + ERASER_OFFSET;
+      float x_mm = digit.segments[i].start.x_mm + digit_loc_x_mm - ERASER_OFFSET;
       float y_mm = digit.segments[i].start.y_mm + digit_loc_y_mm;
       moveTo(x_mm, y_mm);
       setSpeed(STEPPER_MAX_SPEED);
       while (!moveDone())
         runSpeedToPosition();
 
-      effector->position(2); // put pen down
+      effector->position(2);
 
-      x_mm = digit.segments[i].end.x_mm + digit_loc_x_mm + ERASER_OFFSET;
+      x_mm = digit.segments[i].end.x_mm + digit_loc_x_mm - ERASER_OFFSET;
       y_mm = digit.segments[i].end.y_mm + digit_loc_y_mm;
       moveTo(x_mm, y_mm);
       setSpeed(STEPPER_MAX_SPEED);
       while (!moveDone())
         runSpeedToPosition();
 
-      effector->position(0); // lift pen up
+      effector->position(2);
     }
   }
 }
@@ -222,15 +224,16 @@ void Plotter::drawClock(Clock *clock, float clock_loc_x_mm, float clock_loc_y_mm
   float y_mm = clock_loc_y_mm;
   for (int i = 0; i < CLOCK_NUM_DIGITS; i++)
   {
-    x_mm += i * DIGIT_SPACING;
     drawDigit(clock->digits[i], x_mm, y_mm);
 
     if (i == 1)
     {
       // draw delimiter
-      float delim_offset_x_mm = DIGIT_SPACING / 2;
-      drawDelimiter(&clock->delimiter, x_mm + delim_offset_x_mm, y_mm);
+      float delim_offset_x_mm = DIGIT_SPACING;
+      x_mm += delim_offset_x_mm;
+      drawDelimiter(&clock->delimiter, x_mm, y_mm);
     };
+      x_mm += DIGIT_SPACING;
   }
 }
 
@@ -240,9 +243,13 @@ void Plotter::eraseClock(Clock *clock, float clock_loc_x_mm, float clock_loc_y_m
   float y_mm = clock_loc_y_mm;
   for (int i = 0; i < CLOCK_NUM_DIGITS; i++)
   {
-    x_mm += i * DIGIT_SPACING;
+    x_mm += DIGIT_SPACING;
     eraseDigit(clock->digits[i], x_mm, y_mm);
   }
+}
+
+void Plotter::eraseBoard(float x_1_mm, float y_1_mm, float x_2_mm, float y_2_mm) {
+  
 }
 
 
@@ -257,7 +264,7 @@ void Plotter::drawDelimiter(Delimiter *delim, float delim_loc_x_mm, float delim_
     runSpeedToPosition();
 
   effector->position(1);
-  effector->position(0);
+  effector->position(2);
 
   x_mm += delim->top.x_mm;
   y_mm += delim->top.y_mm;
@@ -267,6 +274,6 @@ void Plotter::drawDelimiter(Delimiter *delim, float delim_loc_x_mm, float delim_
   while (!moveDone())
     runSpeedToPosition();
 
-  // TOUCH PEN DOWN HERE
-  // LIFT PEN UP
+  effector->position(1);
+  effector->position(2);
 }

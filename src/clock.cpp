@@ -1,3 +1,5 @@
+// Copyright 2021 Peter Siegel psiegel@bu.edu
+
 #include <Arduino.h>
 #include <config.h>
 #include "clock.h"

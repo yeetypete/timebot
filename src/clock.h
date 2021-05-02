@@ -1,3 +1,5 @@
+// Copyright 2021 Peter Siegel psiegel@bu.edu
+
 #ifndef CLOCK_H
 #define CLOCK_H
 #include <Arduino.h>

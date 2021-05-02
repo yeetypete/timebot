@@ -1,3 +1,5 @@
+// Copyright 2021 Peter Siegel psiegel@bu.edu
+
 #ifndef PLOTTER_H
 #define PLOTTER_H
 
@@ -38,6 +40,7 @@ public:
     void eraseDigit(Digit, float, float);
     void drawClock(Clock *, float, float);
     void eraseClock(Clock *, float, float);
+    void eraseBoard(float, float, float, float);
     void drawDelimiter(Delimiter *, float, float);
 
 public:
