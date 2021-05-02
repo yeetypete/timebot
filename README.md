@@ -3,7 +3,7 @@
 Here you will find the program used to write the time to a whiteboard using a 2-DOF Parallel robot created in Boston University's ME360 course.
 
 ## Plotter Configuration
-You can find the configuration file which controls various parameters and settings based on the geometry of the robot and the electronics setup in `src/plotter.h`. The following parameters can be modified to suit various configurations:
+You can find the configuration file which controls various parameters and settings based on the geometry of the robot and the electronics setup in [src/config.h](src/config.h). The following parameters can be modified to suit various configurations:
 
 ```c++
 #define CLOCK_NUM_DIGITS 4
@@ -68,7 +68,7 @@ class Clock {
     
 };
 ```
-The `Delimeter` and `Digit` classes are used to define the geometry of the delimiter and digits in the clock alphanumeric display. The `Digit` and `Delimiter` classes are defined as follows:
+The `Delimeter` and `Digit` classes (found in [src/clock.h](src/clock.h)) are used to define the geometry of the delimiter and digits in the clock alphanumeric display. The `Digit` and `Delimiter` classes are defined as follows:
 
 ```c++
 class Digit {
@@ -90,7 +90,7 @@ class Delimiter {
     Point top;
 };
 ```
-Digits are made of segments consisting of a `Point` class storing the x and y coordinate. The start point and end point define a line segment. The `Point` and `Segment` classes have the following structure:
+Digits are made of segments consisting of a `Point` class storing the x and y coordinate. The start point and end point define a line segment. The `Point` and `Segment` classes are found in [src/clock.h](src/clock.h) and have the following structure:
 
 ```c++
 struct Point {
