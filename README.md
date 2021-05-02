@@ -92,7 +92,7 @@ class Delimiter {
 ```
 Digits are made of segments consisting of a `Point` class storing the x and y coordinate. The start point and end point define a line segment. The `Point` and `Segment` classes have the following structure:
 
-``c++
+```c++
 struct Point {
     float x_mm;
     float y_mm;
